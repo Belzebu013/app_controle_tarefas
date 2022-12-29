@@ -18,11 +18,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
+Auth::routes(['verify' => true]); // verificação de email para poder acessar ao sistema
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])
+    ->name('home')
+    ->middleware('verified');
 
-Route::resource('/tarefa', App\Http\Controllers\TarefaController::class);
+Route::resource('/tarefa', App\Http\Controllers\TarefaController::class)
+    ->middleware('verified');
 
 Route::get('/mensagem-teste', function(){
    return new MensagemTesteMail();

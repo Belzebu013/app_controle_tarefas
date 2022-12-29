@@ -51,13 +51,13 @@ class RedefinirSenhaNotification extends Notification
         $saudacao = 'Olá. '.$this->name;
 
         return (new MailMessage)
-        ->subject(Lang::get('Atualização de Senha'))
-        ->greeting($saudacao)
-        ->line(Lang::get('Esqueceu a senha? Sem problemas, vamos resolver isso!!!'))
-        ->action(Lang::get('Clique aqui para modificar a senha'), $url)
-        ->line(Lang::get('O link acima expira em '.$minutos.' minutos'))
-        ->line(Lang::get('Caso não solicitado, ignorar este email'))
-        ->salutation('Até breve!');
+            ->subject(Lang::get('Atualização de Senha'))
+            ->greeting($saudacao)
+            ->line(Lang::get('Esqueceu a senha? Sem problemas, vamos resolver isso!!!'))
+            ->action(Lang::get('Clique aqui para modificar a senha'), $url)
+            ->line(Lang::get('O link acima expira em '.$minutos.' minutos'))
+            ->line(Lang::get('Caso não solicitado, ignorar este email'))
+            ->salutation('Até breve!');
     }
 
     /**

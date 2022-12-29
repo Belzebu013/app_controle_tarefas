@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Tareda;
+use App\Models\tarefa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Mail\NovaTarefaMail;
+use Mail;
 
 class TarefaController extends Controller
 {
@@ -16,7 +18,7 @@ class TarefaController extends Controller
      */
     public function index()
     {
-
+        /*
         if(Auth::check()){
 
             $id = Auth::user()->id;
@@ -30,18 +32,10 @@ class TarefaController extends Controller
             return 'Voce nao esta logado';
 
         }
-
-        /*
-        if(auth()->check()){
-            $id = auth()->user()->id;
-            $name = auth()->user()->name;
-            $email = auth()->user()->email;
-
-            return "ID: $id | Nome: $name | Email: $email";
-        }else{
-            return 'Voce nao esta logado';
-        }
         */
+
+        return view('tarefa.create');
+       
     }
 
     /**
@@ -51,7 +45,7 @@ class TarefaController extends Controller
      */
     public function create()
     {
-        //
+        return view('tarefa.create');
     }
 
     /**
@@ -62,27 +56,46 @@ class TarefaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $dados = $request->all('tarefa', 'data_limite_conclusao');
+        $dados['user_id'] = auth()->user()->id;
+
+        $regras = [
+            'tarefa' => 'required',
+            'data_limite_conclusao' => 'required'
+        ];
+
+        $feedback = [
+            'required' => 'Campo obrigatório'
+        ];
+        
+        $request->validate($regras, $feedback);
+
+        $tarefa = Tarefa::create($dados); // Salvar no banco de dados
+
+        $destinatario = Auth::user()->email; //Email do usuario logado
+        Mail::to($destinatario)->send(new NovaTarefaMail($tarefa)); // Disparar o email de nova tarefa
+
+        return redirect()->route('tarefa.show', ['tarefa' => $tarefa->id]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Tareda  $tareda
+     * @param  \App\Models\tarefa  $tarefa
      * @return \Illuminate\Http\Response
      */
-    public function show(Tareda $tareda)
+    public function show(tarefa $tarefa)
     {
-        //
+        return view('tarefa.show', ['tarefa' => $tarefa]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Tareda  $tareda
+     * @param  \App\Models\tarefa  $tarefa
      * @return \Illuminate\Http\Response
      */
-    public function edit(Tareda $tareda)
+    public function edit(tarefa $tarefa)
     {
         //
     }
@@ -91,10 +104,10 @@ class TarefaController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Tareda  $tareda
+     * @param  \App\Models\tarefa  $tarefa
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Tareda $tareda)
+    public function update(Request $request, tarefa $tarefa)
     {
         //
     }
@@ -102,10 +115,10 @@ class TarefaController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Tareda  $tareda
+     * @param  \App\Models\tarefa  $tarefa
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Tareda $tareda)
+    public function destroy(tarefa $tarefa)
     {
         //
     }
