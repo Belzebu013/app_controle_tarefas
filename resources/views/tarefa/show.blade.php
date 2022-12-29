@@ -14,6 +14,7 @@
                         </div>
                     </fieldset>
                      <a href="{{url()->previous() /*retornar a pagina anterior acessada pelo client */}}" class="btn btn-primary">Voltar</a>
+                     <a href="{{route('tarefa.index') }}" class="btn btn-primary">Listar</a>
                 </div>
             </div>
         </div>

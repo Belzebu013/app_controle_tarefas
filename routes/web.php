@@ -15,14 +15,12 @@ use App\Mail\MensagemTesteMail;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('bem-vindo');
 });
 
 Auth::routes(['verify' => true]); // verificação de email para poder acessar ao sistema
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])
-    ->name('home')
-    ->middleware('verified');
+Route::get('/tarefa/exportacao/{extensao}', [App\Http\Controllers\TarefaController::class, 'exportacao'])->name('tarefa.exportacao');
 
 Route::resource('/tarefa', App\Http\Controllers\TarefaController::class)
     ->middleware('verified');
