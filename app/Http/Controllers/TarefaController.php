@@ -9,6 +9,7 @@ use App\Mail\NovaTarefaMail;
 use App\Exports\TarefasExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Mail;
+use App\Mail\TesteSozinhoMail;
 
 class TarefaController extends Controller
 {
